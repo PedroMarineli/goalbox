@@ -57,9 +57,9 @@ const CartPage = () => {
             </button>
           </div>
           <div className="mt-8 text-right">
-            <button className="bg-green-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-600">
+            <Link href="/checkout/information" className="bg-green-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-600">
               Finalizar Compra
-            </button>
+            </Link>
           </div>
         </div>
       )}

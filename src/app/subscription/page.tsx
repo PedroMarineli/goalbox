@@ -1,64 +1,64 @@
 'use client';
 
-import { useState } from 'react';
-import getStripe from '@/lib/stripe';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Check } from 'lucide-react';
 
 const SubscriptionPage = () => {
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSubscribe = async () => {
-    setLoading(true);
-    const response = await fetch('/api/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ priceId: 'price_1Pz4iTRs8d3gX5g5j5g5j5g5' }), // Substitua pelo ID do seu preço
-    });
-
-    const { sessionId, error: apiError } = await response.json();
-
-    if (apiError) {
-      console.error(apiError);
-      setLoading(false);
-      return;
-    }
-
-    const stripe = await getStripe();
-    if (!stripe) {
-      setLoading(false);
-      return;
-    }
-
-    const { error } = await stripe.redirectToCheckout({ sessionId });
-
-    if (error) {
-      console.error(error.message);
-    }
-    setLoading(false);
+  const handleSubscribe = () => {
+    router.push('/checkout/information?type=subscription');
   };
 
   return (
-    <div className="text-center">
-      <h1 className="text-4xl font-bold mb-4">Plano de Assinatura GoalBox</h1>
-      <p className="text-xl mb-8">Receba uma chuteira surpresa todo mês!</p>
-      <div className="border rounded-lg p-8 max-w-sm mx-auto">
-        <h2 className="text-2xl font-bold mb-4">Plano Mensal</h2>
-        <p className="text-5xl font-bold mb-4">R$199<span className="text-lg">/mês</span></p>
-        <ul className="text-left mb-8">
-          <li className="mb-2">✔️ Uma chuteira de alta qualidade</li>
-          <li className="mb-2">✔️ Modelos selecionados por especialistas</li>
-          <li className="mb-2">✔️ Frete grátis para todo o Brasil</li>
-          <li>✔️ Cancele quando quiser</li>
-        </ul>
-        <button
-          onClick={handleSubscribe}
-          disabled={loading}
-          className="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600 disabled:bg-gray-400"
-        >
-          {loading ? 'Carregando...' : 'Assinar Agora'}
-        </button>
-      </div>
+    <div className="container py-12 flex justify-center">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl">Plano de Assinatura GoalBox</CardTitle>
+          <CardDescription>Receba uma chuteira surpresa todo mês!</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center mb-8">
+            <p className="text-5xl font-extrabold">R$199<span className="text-xl font-normal text-muted-foreground">/mês</span></p>
+          </div>
+          <ul className="space-y-3">
+            <li className="flex items-center">
+              <Check className="h-5 w-5 text-green-500 mr-2" />
+              <span>Uma chuteira de alta qualidade</span>
+            </li>
+            <li className="flex items-center">
+              <Check className="h-5 w-5 text-green-500 mr-2" />
+              <span>Modelos selecionados por especialistas</span>
+            </li>
+            <li className="flex items-center">
+              <Check className="h-5 w-5 text-green-500 mr-2" />
+              <span>Frete grátis para todo o Brasil</span>
+            </li>
+            <li className="flex items-center">
+              <Check className="h-5 w-5 text-green-500 mr-2" />
+              <span>Cancele quando quiser</span>
+            </li>
+          </ul>
+        </CardContent>
+        <CardFooter>
+          <Button
+            onClick={handleSubscribe}
+            size="lg"
+            className="w-full"
+          >
+            Assinar Agora
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };
