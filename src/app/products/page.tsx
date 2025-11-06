@@ -1,7 +1,9 @@
 import ProductCard from '@/components/ProductCard';
-import { products } from '@/data/products';
+import { prisma } from '@/lib/prisma';
 
-const ProductsPage = () => {
+const ProductsPage = async () => {
+  const products = await prisma.product.findMany();
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8">Nossas Chuteiras</h1>
