@@ -1,18 +1,25 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            Bem-vindo à GoalBox
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Seu clube de assinatura de chuteiras de alta performance.
-          </p>
+    <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
+      <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+        <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+          GoalBox: Seu Clube de Assinatura de Chuteiras
+        </h1>
+        <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+          Receba em casa, todo mês, uma chuteira de alta performance selecionada por especialistas. Eleve seu jogo a um novo patamar.
+        </p>
+        <div className="space-x-4">
+          <Button asChild>
+            <Link href="/subscription">Quero Assinar</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/products">Ver Chuteiras</Link>
+          </Button>
         </div>
-      </main>
-    </div>
+      </div>
+    </section>
   );
 }

@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import AddToCartButton from '@/components/AddToCartButton';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
   const product = await prisma.product.findUnique({
@@ -15,21 +16,32 @@ const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div className="container mx-auto my-12">
       <div className="grid md:grid-cols-2 gap-12 items-start">
-        <div className="relative w-full h-[500px] rounded-lg overflow-hidden shadow-lg">
-          <Image
-            src={product.image}
-            alt={product.name}
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <div className="flex flex-col justify-center h-full">
-          <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
-          <p className="text-gray-500 text-lg mb-4">{product.brand}</p>
-          <p className="text-3xl font-semibold mb-6">R$ {product.price.toFixed(2)}</p>
-          <p className="text-gray-700 mb-8 leading-relaxed">{product.description}</p>
-          
-          <AddToCartButton product={product} />
+        <Card className="overflow-hidden">
+          <div className="relative w-full aspect-square">
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover"
+            />
+          </div>
+        </Card>
+        
+        <div className="flex flex-col h-full">
+          <Card>
+            <CardHeader>
+              <p className="text-sm text-muted-foreground">{product.brand}</p>
+              <CardTitle className="text-4xl font-bold">{product.name}</CardTitle>
+              <p className="text-3xl font-semibold pt-2">R$ {product.price.toFixed(2)}</p>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-base leading-relaxed">{product.description}</CardDescription>
+            </CardContent>
+            <CardFooter>
+              <AddToCartButton product={product} />
+            </CardFooter>
+          </Card>
         </div>
       </div>
     </div>

@@ -17,6 +17,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
 import Image from "next/image";
+import OrderSummary from "@/components/OrderSummary";
 
 function CheckoutPaymentForm() {
 	const router = useRouter();
@@ -52,107 +53,110 @@ function CheckoutPaymentForm() {
 		: "/checkout/information";
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>Pagamento</CardTitle>
-				<CardDescription>
-					Escolha sua forma de pagamento preferida.
-				</CardDescription>
-			</CardHeader>
-			<form onSubmit={handleSubmit}>
-				<CardContent className="space-y-6">
-					<Tabs
-						value={paymentMethod}
-						onValueChange={setPaymentMethod}
-						className="w-full"
-					>
-						<TabsList className="grid w-full grid-cols-2">
-							<TabsTrigger value="card">Cartão de Crédito</TabsTrigger>
-							<TabsTrigger value="pix">Pix</TabsTrigger>
-						</TabsList>
-						<TabsContent value="card" className="mt-6">
-							<div className="space-y-4">
-								<div className="space-y-2">
-									<Label htmlFor="cardNumber">Número do Cartão</Label>
-									<Input
-										id="cardNumber"
-										placeholder="0000 0000 0000 0000"
-										required={paymentMethod === "card"}
-									/>
-								</div>
-								<div className="space-y-2">
-									<Label htmlFor="cardName">Nome no Cartão</Label>
-									<Input
-										id="cardName"
-										placeholder="Seu nome como aparece no cartão"
-										required={paymentMethod === "card"}
-									/>
-								</div>
-								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-									<div className="space-y-2 md:col-span-2">
-										<Label htmlFor="expiryDate">Data de Validade</Label>
-										<Input
-											id="expiryDate"
-											placeholder="MM/AA"
-											required={paymentMethod === "card"}
-										/>
+		<div className="flex flex-col md:flex-row gap-12">
+			<div className="w-full md:w-2/3 lg:w-3/5">
+				<Card>
+					<CardHeader>
+						<CardTitle>Pagamento</CardTitle>
+						<CardDescription>
+							Escolha sua forma de pagamento preferida.
+						</CardDescription>
+					</CardHeader>
+					<form onSubmit={handleSubmit}>
+						<CardContent className="space-y-6">
+							<Tabs
+								value={paymentMethod}
+								onValueChange={setPaymentMethod}
+								className="w-full"
+							>
+								<TabsList className="grid w-full grid-cols-2">
+									<TabsTrigger value="card">Cartão de Crédito</TabsTrigger>
+									<TabsTrigger value="pix">Pix</TabsTrigger>
+								</TabsList>
+								<TabsContent value="card" className="mt-6">
+									<div className="space-y-4">
+										<div className="space-y-2">
+											<Label htmlFor="cardNumber">Número do Cartão</Label>
+											<Input
+												id="cardNumber"
+												placeholder="0000 0000 0000 0000"
+												required={paymentMethod === "card"}
+											/>
+										</div>
+										<div className="space-y-2">
+											<Label htmlFor="cardName">Nome no Cartão</Label>
+											<Input
+												id="cardName"
+												placeholder="Seu nome como aparece no cartão"
+												required={paymentMethod === "card"}
+											/>
+										</div>
+										<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+											<div className="space-y-2 md:col-span-2">
+												<Label htmlFor="expiryDate">Data de Validade</Label>
+												<Input
+													id="expiryDate"
+													placeholder="MM/AA"
+													required={paymentMethod === "card"}
+												/>
+											</div>
+											<div className="space-y-2">
+												<Label htmlFor="cvc">CVC</Label>
+												<Input
+													id="cvc"
+													placeholder="123"
+													required={paymentMethod === "card"}
+												/>
+											</div>
+										</div>
 									</div>
-									<div className="space-y-2">
-										<Label htmlFor="cvc">CVC</Label>
-										<Input
-											id="cvc"
-											placeholder="123"
-											required={paymentMethod === "card"}
-										/>
+								</TabsContent>
+								<TabsContent value="pix" className="mt-6">
+									<div className="flex flex-col items-center justify-center text-center">
+										<p className="mb-4">
+											Para pagar com Pix, escaneie o QR Code abaixo com o app do
+											seu banco:
+										</p>
+										<div className="relative w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+											<Image
+												src="/images/qr-code-placeholder.svg"
+												alt="QR Code Pix"
+												width={180}
+												height={180}
+											/>
+										</div>
+										<p className="mt-4 text-sm text-gray-600">
+											O pedido será confirmado após a aprovação do pagamento.
+										</p>
 									</div>
-								</div>
-							</div>
-						</TabsContent>
-						<TabsContent value="pix" className="mt-6">
-							<div className="flex flex-col items-center justify-center text-center">
-								<p className="mb-4">
-									Para pagar com Pix, escaneie o QR Code abaixo com o app do
-									seu banco:
-								</p>
-								<div className="relative w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-									<Image
-										src="/images/qr-code-placeholder.svg"
-										alt="QR Code Pix"
-										width={180}
-										height={180}
-									/>
-								</div>
-								<p className="mt-4 text-sm text-gray-600">
-									O pedido será confirmado após a aprovação do pagamento.
-								</p>
-							</div>
-						</TabsContent>
-					</Tabs>
-				</CardContent>
-				<CardFooter className="flex justify-between items-center">
-					<Button variant="ghost" asChild>
-						<Link href={backUrl}>Voltar</Link>
-					</Button>
-					<Button type="submit" disabled={loading}>
-						{loading
-							? "Processando..."
-							: paymentMethod === "pix"
-							? "Finalizar Pedido"
-							: "Pagar Agora"}
-					</Button>
-				</CardFooter>
-			</form>
-		</Card>
+								</TabsContent>
+							</Tabs>
+						</CardContent>
+						<CardFooter className="flex justify-between items-center">
+							<Button variant="ghost" asChild>
+								<Link href={backUrl}>Voltar</Link>
+							</Button>
+							<Button type="submit" disabled={loading}>
+								{loading
+									? "Processando..."
+									: paymentMethod === "pix"
+									? "Finalizar Pedido"
+									: "Pagar Agora"}
+							</Button>
+						</CardFooter>
+					</form>
+				</Card>
+			</div>
+			{!isSubscription && <OrderSummary />}
+		</div>
 	);
 }
 
 const CheckoutPaymentPage = () => {
 	return (
-		<div className="container py-12 max-w-2xl">
-			<Suspense fallback={<div>Carregando...</div>}>
-				<CheckoutPaymentForm />
-			</Suspense>
-		</div>
+		<Suspense fallback={<div>Carregando...</div>}>
+			<CheckoutPaymentForm />
+		</Suspense>
 	);
 };
 

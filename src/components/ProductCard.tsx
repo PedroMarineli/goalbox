@@ -4,6 +4,10 @@ import { Product } from '@/models/Product';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/lib/CartContext';
+import { Button } from './ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { toast } from 'sonner';
+import { ShoppingCart } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -14,32 +18,36 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const handleAddToCart = () => {
     addToCart(product, 1);
-    alert(`${product.name} foi adicionado ao carrinho!`);
+    toast.success(`${product.name} foi adicionado ao carrinho!`);
   };
 
   return (
-    <div className="border rounded-lg p-4 flex flex-col">
-      <Link href={`/products/${product.id}`}>
-        <div className="relative w-full h-48 mb-4">
+    <Card className="flex flex-col overflow-hidden">
+      <CardHeader className="p-0">
+        <Link href={`/products/${product.id}`} className="block relative w-full aspect-square">
           <Image
             src={product.image}
             alt={product.name}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-md"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
           />
-        </div>
-        <h2 className="text-lg font-bold">{product.name}</h2>
-        <p className="text-gray-500">{product.brand}</p>
-        <p className="text-xl font-semibold mt-2">R$ {product.price.toFixed(2)}</p>
-      </Link>
-      <button
-        onClick={handleAddToCart}
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-      >
-        Adicionar ao Carrinho
-      </button>
-    </div>
+        </Link>
+      </CardHeader>
+      <CardContent className="p-4 flex-grow">
+        <Link href={`/products/${product.id}`}>
+          <CardTitle className="text-lg font-semibold hover:underline">{product.name}</CardTitle>
+        </Link>
+        <p className="text-sm text-muted-foreground">{product.brand}</p>
+        <p className="text-xl font-bold mt-2">R$ {product.price.toFixed(2)}</p>
+      </CardContent>
+      <CardFooter className="p-4 pt-0">
+        <Button onClick={handleAddToCart} className="w-full">
+          <ShoppingCart className="mr-2 h-4 w-4" />
+          Adicionar ao Carrinho
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 
