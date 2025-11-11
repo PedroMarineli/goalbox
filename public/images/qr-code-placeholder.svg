@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#f0f0f0"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="14" fill="#333">
+    QR Code Placeholder
+  </text>
+  <path d="M40,40 H80 V80 H40 Z M120,40 H160 V80 H120 Z M40,120 H80 V160 H40 Z" stroke="#333" stroke-width="4" fill="none"/>
+  <rect x="45" y="45" width="30" height="30" fill="#333"/>
+  <rect x="125" y="45" width="30" height="30" fill="#333"/>
+  <rect x="45" y="125" width="30" height="30" fill="#333"/>
+</svg>
